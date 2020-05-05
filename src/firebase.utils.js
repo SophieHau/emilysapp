@@ -4,7 +4,7 @@ import 'firebase/firestore';
 import 'firebase/storage';
 
 const config = {
-  apiKey: "",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "emilys-app-f1604.firebaseapp.com",
   databaseURL: "https://emilys-app-f1604.firebaseio.com",
   projectId: "emilys-app-f1604",
