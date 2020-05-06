@@ -48,7 +48,7 @@ class Register extends React.Component {
     render() {
         const { displayName, email, password, confirmPassword } = this.state;
         return (
-            <article className="br3 ba b--black-10 mv1 w-90 w-50-m w-25-l mw6 shadow-5 center">
+            <article className="br3 ba b--black-10 w-90 w-50-m w-25-l mw6 shadow-5 center">
                 <main className="pa3 pa4-m pa4-l black-80">
                     <form className="measure center" onSubmit={this.handleSubmit}>
                         <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
@@ -56,7 +56,7 @@ class Register extends React.Component {
                         <div className="mt3">
                             <label className="db fw6 lh-copy f6" htmlFor="displayName">Name</label>
                             <input 
-                                className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                                className="pa2 input-reset ba bg-transparent hover-bg-white hover-gray w-100" 
                                 type="text" 
                                 name="displayName" 
                                 id="displayName"
@@ -68,7 +68,7 @@ class Register extends React.Component {
                         <div className="mt3">
                             <label className="db fw6 lh-copy f6" htmlFor="email">Email</label>
                             <input 
-                                className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                                className="pa2 input-reset ba bg-transparent hover-bg-white hover-gray w-100" 
                                 type="email" 
                                 name="email"
                                 id="email"
@@ -80,7 +80,7 @@ class Register extends React.Component {
                         <div className="mv3">
                             <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                             <input 
-                                className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                                className="pa2 input-reset ba bg-transparent hover-bg-white hover-gray w-100" 
                                 type="password" 
                                 name="password" 
                                 id="password"
@@ -89,10 +89,10 @@ class Register extends React.Component {
                                 required
                             />
                         </div>
-                        <div className="mv3">
+                        <div className="mv2">
                             <label className="db fw6 lh-copy f6" htmlFor="confirmPassword">Confirm password</label>
                             <input 
-                                className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                                className="pa2 input-reset ba bg-transparent hover-bg-white hover-gray w-100" 
                                 type="password" 
                                 name="confirmPassword" 
                                 id="confirmPassword"
@@ -104,14 +104,14 @@ class Register extends React.Component {
                         </fieldset>
                         <div className="">
                             <button 
-                                className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib no-underline black" 
+                                className="b--hot-pink mr2 ml2 bg-transparent f6 grow no-underline br-pill ba ph3 pv2 mb2 dib hot-pink w4" 
                                 type="submit"
                                 onClick={this.handleSubmit}
                             >
                                 Register
                             </button>
                         </div>
-                        <div className="lh-copy mt3">
+                        <div className="lh-copy mt1">
                             <Link to='/signin' className="pointer f6 link dim black db">Already registered? <span className="underline">Sign in</span></Link>
                         </div>
                     </form>

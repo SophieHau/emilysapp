@@ -44,7 +44,7 @@ class SignIn extends React.Component {
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f6" htmlFor="email">Email</label>
                                 <input 
-                                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                                    className="pa2 input-reset ba bg-transparent hover-bg-white hover-gray w-100" 
                                     type="email"
                                     name="email"  
                                     id="email"
@@ -56,7 +56,7 @@ class SignIn extends React.Component {
                             <div className="mv3">
                                 <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
                                 <input 
-                                    className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    className="b pa2 input-reset ba bg-transparent hover-bg-white hover-gray w-100"
                                     type="password" 
                                     name="password"
                                     id="password" 
@@ -66,16 +66,16 @@ class SignIn extends React.Component {
                                 />
                             </div>
                             </fieldset>
-                            <div className="">
+                            <div className="ph3">
                                 <button 
-                                    className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib no-underline black" 
+                                    className="b--light-purple mr2 ml2 bg-transparent f6 grow no-underline br-pill ba ph3 pv2 mb2 dib light-purple w4" 
                                     type="submit"
                                     onClick={this.handleSubmit}
                                 >
                                     Sign in
                                 </button>
                                 <button 
-                                    className="b ph3 ml2 pv2 input-reset ba b--black bg-blue grow pointer f6 dib no-underline white" 
+                                    className="b--blue ml2 mr2 bg-transparent f6 grow no-underline br-pill ba ph3 pv2 mb2 dib blue" 
                                     onClick={signInWithGoogle}
                                 >
                                     Sign in with Google

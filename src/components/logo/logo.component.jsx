@@ -1,10 +1,10 @@
 import React from 'react';
-import logo from './logo.png';
+import logo from './logo2.png';
 
 const Logo = () => {
     return (
         <div>
-            <img src={logo} alt="app-logo" style={{width: '110px'}}/>
+            <img src={logo} alt="app-logo" style={{width: '90px'}}/>
         </div>
         
     )

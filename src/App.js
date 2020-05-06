@@ -6,6 +6,7 @@ import Navigation from './components/navbar/navbar.component';
 import HomePage from './pages/homepage.page';
 import SignIn from './pages/signin.page';
 import Register from './pages/register.page';
+import ChatPage from './pages/chat.page';
 
 
 class App extends React.Component {
@@ -46,11 +47,17 @@ class App extends React.Component {
     return (
       <div className="App">
         <Router>
-        <Navigation currentUser={this.state.currentUser} />
+          {
+            window.location.pathname !== '/chat' && <Navigation currentUser={this.state.currentUser} />
+          }
           <Switch>
             <Route 
               exact path='/' 
               component={HomePage}
+            />
+            <Route
+              exact path='/chat'
+              component={ChatPage}
             />
             <Route 
               exact path='/signin' 
