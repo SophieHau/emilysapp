@@ -48,15 +48,15 @@ class App extends React.Component {
       <div className="App">
         <Router>
           {
-            window.location.pathname !== '/chat' && <Navigation currentUser={this.state.currentUser} />
+            !window.location.pathname.includes('/chat/') && <Navigation currentUser={this.state.currentUser} />
           }
           <Switch>
             <Route 
               exact path='/' 
-              component={HomePage}
+              render={(props) => <HomePage {...props} currentUser={this.state.currentUser} />}
             />
             <Route
-              exact path='/chat'
+              exact path='/chat/:id'
               component={ChatPage}
             />
             <Route 

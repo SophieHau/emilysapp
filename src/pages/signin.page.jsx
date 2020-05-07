@@ -40,11 +40,11 @@ class SignIn extends React.Component {
                     <main className="pa3 pa4-m pa4-l black-80">
                         <form className="measure center" onSubmit={this.handleSubmit}>
                             <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-                            <legend className="f4 fw6 ph0 mh0">Sign In</legend>
+                            <legend className="f4 fw2 ph0 mh0">Sign In</legend>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f6" htmlFor="email">Email</label>
+                                <label className="db fw2 lh-copy f6" htmlFor="email">Email</label>
                                 <input 
-                                    className="pa2 input-reset ba bg-transparent hover-bg-white hover-gray w-100" 
+                                    className="pa2 input-reset ba b--black-0.25 bg-transparent hover-bg-white hover-gray w-100" 
                                     type="email"
                                     name="email"  
                                     id="email"
@@ -54,7 +54,7 @@ class SignIn extends React.Component {
                                 />
                             </div>
                             <div className="mv3">
-                                <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
+                                <label className="db fw2 lh-copy f6" htmlFor="password">Password</label>
                                 <input 
                                     className="b pa2 input-reset ba bg-transparent hover-bg-white hover-gray w-100"
                                     type="password" 
@@ -68,22 +68,22 @@ class SignIn extends React.Component {
                             </fieldset>
                             <div className="ph3">
                                 <button 
-                                    className="b--light-purple mr2 ml2 bg-transparent f6 grow no-underline br-pill ba ph3 pv2 mb2 dib light-purple w4" 
+                                    className="pointer outline-transparent b--hot-pink mr2 ml2 bg-transparent f6 grow no-underline br-pill ba ph3 pv2 mb2 dib hot-pink w4" 
                                     type="submit"
                                     onClick={this.handleSubmit}
                                 >
                                     Sign in
                                 </button>
                                 <button 
-                                    className="b--blue ml2 mr2 bg-transparent f6 grow no-underline br-pill ba ph3 pv2 mb2 dib blue" 
+                                    className="outline-transparent b--blue ml2 mr2 bg-transparent f6 grow no-underline br-pill ba ph3 pv2 mb2 dib blue pointer" 
                                     onClick={signInWithGoogle}
                                 >
                                     Sign in with Google
                                 </button>
                             </div>
                             <div className="lh-copy mt3">
-                                <Link to='/register' className="pointer f6 link dim black db">Don't have an account yet? <span className="underline">Register</span></Link>
-                                <a href="#0" className="f6 link dim black db">Forgot your password?</a>
+                                <Link to='/register' className="pointer fw2 f6 link dim black db">Don't have an account yet? <span className="underline">Register</span></Link>
+                                <a href="#0" className="f6 fw2 link dim black db">Forgot your password?</a>
                             </div>
                         </form>
                     </main>

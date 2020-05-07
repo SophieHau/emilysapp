@@ -11,7 +11,7 @@ const Navigation = ({ currentUser }) => {
             <div className="dtc v-mid mid-gray w-25">
                 <Logo className="dib w2 h2 br-100" />
             </div>
-            <div className="dtc v-mid w-75 tr" onClick={() => auth.signOut()}>
+            <div className="dtc v-mid w-75 tr fw2" onClick={() => auth.signOut()}>
                 <Link to={'/signin'} className="pointer link dim dark-gray f6 f5-ns dib mr3 mr4-ns mid-gray">Sign out</Link>
             </div>
         </nav>
@@ -23,8 +23,8 @@ const Navigation = ({ currentUser }) => {
                     <Logo className="dib w2 h2 br-100" />
                 </div>
                 {/* <div className="dtc v-mid w-75 tr">
-                    <Link to='/signin' className="pointer link dim dark-gray f6 f5-ns dib mr3 mr4-ns light-purple">Sign In</Link>
-                    <Link to='/register' className="pointer link dim dark-gray f6 f5-ns dib hot-pink">Register</Link>
+                    <Link to='/signin' className="pointer link dim dark-gray f6 f5-ns dib mr3 mr4-ns light-purple fw2">Sign In</Link>
+                    <Link to='/register' className="pointer link dim dark-gray f6 f5-ns dib hot-pink fw2">Register</Link>
                 </div> */}
             </nav>
         );
