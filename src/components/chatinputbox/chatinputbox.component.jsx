@@ -23,3 +23,16 @@ export const ChatInputBox = () => {
         </main>
     )
 }
+
+// createMessageDocument = () => {
+//     firestore.collection('chats').doc('MaFSgwe99njRiTTkEyCq').collection('messages')
+//     .add({ author: 'Soph', content: 'test2'})
+//     const message = { author: 'Soph', content: 'test2'};
+//     const { messages } = this.state;
+//     messages.push(message)
+//     this.setState({messages: messages})
+// }
+
+// <div>
+// <input type="submit" onClick={this.createMessageDocument} />
+// </div>

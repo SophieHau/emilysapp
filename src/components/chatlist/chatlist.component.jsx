@@ -11,6 +11,7 @@ export class ChatList extends React.Component {
 			chats: []
 		}
 	}
+	
 
 	componentDidMount = () => {
 		const chatListForCurrentUser = []
@@ -35,20 +36,22 @@ export class ChatList extends React.Component {
 	render () {
 		const { chats } = this.state;
 		return (
-			<ul className="center mw6 w-90 list pl0 mt3 measure center">
-				{chats.map(chat =>
-				 	
-					<li key={chat.id} className="flex items-center lh-copy pa2 ph0-l bb b--black-10">
-						<Link to={{ pathname:`./chat/${chat.id}` }}>
-						<img className="w2 h2 w3-ns h3-ns br-100" src="http://tachyons.io/img/cat-720.jpg" alt="" />
-						<div className="pl3">
-						<span className="fw3 f6 db black-70">{chat.name}</span>
+			<ul className="center mw6 w-90 list pl0 mt3 measure">
+				{chats.map(chat =>{
+					return (
+					<li key={chat.id} className="flex lh-copy pa2 ph0-l bb b--black-10">
+						<Link to={{ pathname:`./chat/${chat.id}` }} className="no-underline pointer">
+						<div className="dt">
+							<img className="dtc w2 h2 w3-ns h3-ns br-100" src="http://tachyons.io/img/cat-720.jpg" alt="" />
+							<span className="dtc v-mid fw3 pl3 f6 f5-l db black-70">{chat.name}</span>
 						</div>
 						</Link>
-					</li>	
+					</li>
+					)
+					}
 				)}
 			</ul>
 		)
 	}
-
 }
+
