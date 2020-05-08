@@ -1,8 +1,7 @@
 import React from 'react';
 import { firestore, auth } from '../../firebase.utils'; 
 import sendIcon from '../../assets/icons/sendicon.jpg';
-
-
+import './chatboard.style.css';
 
 export class ChatBoard extends React.Component {
     constructor() {
@@ -86,13 +85,14 @@ export class ChatBoard extends React.Component {
     }
 
     scrollToBottom = () => {
-        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        this.messagesEnd.scrollIntoView();
       }
 
     render () {
         const { messages } = this.state;
         return (
-            <main className="mw6 center">
+            <>
+            <main className="mw6 center mb5-l mb1">
                     { messages.map(message => {
                         if (message.author === auth.currentUser.displayName) { 
                                 return (
@@ -113,7 +113,11 @@ export class ChatBoard extends React.Component {
                         }
                     })
                     }
-                <form className="fn bg-white center dib w-90 mt3 mb2 mb0-ns" onSubmit={this.createMessageDocument}>
+                    <div style={{ float:"left", clear: "both" }}
+                    ref={(el) => { this.messagesEnd = el; }}>
+                    </div>
+            </main>
+            <form className="circle-form mw6 fn bg-white center dib w-90 mb5-l mb1" onSubmit={this.createMessageDocument}>
                     <div className="pb1 pt1 ba b--black-20 br4">
                         <input 
                             id="messageInput" 
@@ -134,10 +138,8 @@ export class ChatBoard extends React.Component {
                         </button>
                     </div>
                 </form>
-                <div style={{ float:"left", clear: "both" }}
-                    ref={(el) => { this.messagesEnd = el; }}>
-                </div>
-            </main>
+                
+            </>
         )
     }
 }
