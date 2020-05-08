@@ -4,9 +4,6 @@ import { ChatInputBox } from '../components/chatinputbox/chatinputbox.component'
 import { ChatNav } from '../components/chatnav/chatnav.component';
 
 
-
-
-
 const ChatPage = ({ currentUser }) => {
     return(
         <>
