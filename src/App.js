@@ -58,6 +58,7 @@ class App extends React.Component {
             <Route
               exact path='/chat/:id'
               component={ChatPage}
+              pathname='/chat/'
             />
             <Route 
               exact path='/signin' 

@@ -3,44 +3,55 @@ import { firestore, auth } from '../../firebase.utils';
 import sendIcon from '../../assets/icons/sendicon.jpg';
 import './chatboard.style.css';
 
+
 export class ChatBoard extends React.Component {
     constructor() {
+        auth.onAuthStateChanged(user => {
+            if(user) {
+                const userRef = firestore.doc(`users/${user.uid}`);
+                user = userRef.get().then(user => {
+                    this.state['currentUser'] = user.data()
+                })
+            }
+        })
         super();
+
         this.state = {
             chatId: window.location.pathname.split('/')[2],
             messages: [],
-            message: {},
-            messageInput: ''
+            messageInput: '',
+            newMessage: {}
         }
     }
 
+
     componentDidMount = () => {
-        const messageList = []
-        firestore.collection('chats').doc(this.state.chatId).collection('messages').orderBy('createdAt').get()
-        .then(response => {
-            response.forEach(message => {
-                const newMessage = {
-                    id: message.id,
-                    content: message.data().content,
-                    createdAt: new Date(message.data().createdAt * 1000).toString()
-                }
-                firestore.collection('users').doc(message.data().author.id).get()
-                .then(author => {
+        firestore.collection('chats').doc(this.state.chatId).collection('messages').orderBy('createdAt').limitToLast(10)
+        .onSnapshot(snaphot => {
+            snaphot.docChanges().forEach(change => {
+                if (change.type === "added") {
+                    const newMessage = {
+                        id: change.doc.id,
+                        content: change.doc.data().content,
+                        createdAt: new Date(change.doc.data().createdAt * 1000).toString(),
+                        author: change.doc.data().author
+                    }
+                    firestore.collection('users').doc(change.doc.data().author.id).get()
+                    .then(author => {
                     const authorName = author.data().displayName
                     newMessage['author'] = authorName
-                    messageList.push(newMessage)
-                    this.sortArray(messageList)
-                    this.setState({messages: messageList})
-                }) 
+                    const messages = this.state.messages
+                    messages.push(newMessage)
+                    this.setState({messages: messages, messageInput: ''})
+                    })
+                }
             })
         })
-        .catch (error => {
-            console.log(error)
-        })
+
         this.scrollToBottom();
     }
 
-    componentDidUpdate = () => {
+    componentDidUpdate = (prevState) => {
         this.scrollToBottom();
     }
 
@@ -54,31 +65,19 @@ export class ChatBoard extends React.Component {
 
     createMessageDocument = (event) => {
         event.preventDefault();
+
         const authorRef = firestore.doc(`users/${auth.currentUser.uid}`)
         const newMessage = {
             author: authorRef, 
             content: this.state.messageInput,
             createdAt: new Date()
         }
+
         firestore.collection('chats').doc(this.state.chatId).collection('messages')
         .add(newMessage)
-
-        firestore.collection('chats').doc(this.state.chatId).collection('messages').where("createdAt", "==", newMessage['createdAt']).get()
-            .then(response => {
-                response.forEach(message => {
-                    newMessage['id'] = message.id;
-                    newMessage['createdAt'] = new Date(message.data().createdAt * 1000).toString();
-                    newMessage['author'] = auth.currentUser.displayName;
-                })
-                const { messages } = this.state;
-                messages.push(newMessage)
-                this.setState({messages: messages, messageInput: ''})                
-            })
-            .catch (error => {
-            console.log(error)
-            })        
     }
-
+        
+    
     handleChange = (event) => {
         const {value, name} = event.target
         this.setState({ [name]: value})
@@ -86,15 +85,17 @@ export class ChatBoard extends React.Component {
 
     scrollToBottom = () => {
         this.messagesEnd.scrollIntoView();
-      }
+    }
 
     render () {
-        const { messages } = this.state;
+        const { messages, currentUser } = this.state;
+        this.sortArray(messages)
+
         return (
             <>
             <main className="mw6 center mb5-l mb1">
                     { messages.map(message => {
-                        if (message.author === auth.currentUser.displayName) { 
+                        if (message.author === currentUser.displayName) { 
                                 return (
                                     <article key={message.id} className="dib w-100">
                                         <div key={message.id} className="dtc v-mid pl5 tr fr">
@@ -114,7 +115,7 @@ export class ChatBoard extends React.Component {
                     })
                     }
                     <div style={{ float:"left", clear: "both" }}
-                    ref={(el) => { this.messagesEnd = el; }}>
+                        ref={(el) => { this.messagesEnd = el; }}>
                     </div>
             </main>
             <form className="circle-form mw6 fn bg-white center dib w-90 mb5-l mb1" onSubmit={this.createMessageDocument}>

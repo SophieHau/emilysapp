@@ -50,26 +50,3 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 };
 
 export default firebase;
-
-
-        // const message_list = []
-
-        // firestore.collectionGroup('messages')
-        //     .onSnapshot({
-        //         includeMetadataChanges: true
-        //         },
-        //         querySnapshot => {
-        //             querySnapshot.forEach(doc => {
-        //             message_list.push({
-        //                 id: doc.id,
-        //                 ...doc.data()
-        //             })
-                        
-        //         })
-        //         console.log(message_list)
-        //         this.setState({messages: message_list})
-        //         },
-        //         error => {
-        //             console.log(error)
-        //         }
-        // );

@@ -3,18 +3,7 @@ main{
     overflow-y:auto;
     position:relative;
   }
-  /* article{
-    border-bottom:1px solid #ddd;
-    list-style:none;
-    margin-left:0;
-    padding:6px;
-  } */
-  
-  /* .wrapper{
-    background:#eee;
-    height:30em;
-    position:relative;
-  } */
+
   .circle-form{
     position:fixed;
     background-color: white;
@@ -24,42 +13,63 @@ main{
     z-index:2;
   }
 
-  @media only screen and (min-width: 320px) {
+
+  @media  (min-height: 568px) and (max-height: 639px) {
     main {
         height:60vh;
     }
   }
 
-  @media only screen and (min-width: 375px) {
+  @media (min-height: 640px) and (max-height: 666px) {
     main {
         height:63vh;
     }
   }
 
-  @media only screen and (min-width: 411px) {
+  @media (min-height: 667px) and (max-height: 730px) {
+    main {
+        height:64vh;
+    }
+  }
+
+  @media (min-height: 731px) and (max-height: 735px) {
     main {
         height:67vh;
     }
   }
 
-  @media (min-height: 812px) and (min-width: 375px) {
+  @media (min-height: 736px) and (max-height: 811px) {
+    main {
+        height:67vh;
+    }
+  }
+
+  @media (min-height: 812px) and (max-height: 822px) {
     main {
         height:70vh;
     }
   }
 
-  @media only screen and (min-width: 768px) {
-      main {
-          height: 77vh;
-      }
+  @media (min-height: 823px) and (max-height: 980px) {
+    main {
+        height:70vh;
+    }
   }
 
-  @media only screen and (min-width: 1100px) {
-      main {
-          height: 70vh;
-      }
+  @media (min-height: 981px) and (max-height: 1023px){
+    main {
+        height:68vh;
+    }
   }
-  /* .circle-form input[type=text]{
-    padding:8px;
-    width:50%;
-  } */
+
+  @media (min-height: 1024px) and (max-height:1365px) {
+    main {
+        height:76vh;
+    }
+  }
+
+  @media only screen and (min-height: 1366px) {
+    main {
+        height:77vh;
+    }
+  }
