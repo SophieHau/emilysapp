@@ -1,12 +1,12 @@
 import React from 'react';
-import { Switch, Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
+import { Switch, Route, MemoryRouter as Router, Redirect } from 'react-router-dom';
 import './App.css';
 import { auth, createUserProfileDocument } from './firebase.utils';
-import Navigation from './components/navbar/navbar.component';
 import HomePage from './pages/homepage.page';
 import SignIn from './pages/signin.page';
 import Register from './pages/register.page';
 import ChatPage from './pages/chat.page';
+import CreateChat from './pages/createChat.page';
 
 
 class App extends React.Component {
@@ -47,9 +47,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Router>
-          {
-            window.location.pathname !== './chat/' && <Navigation currentUser={this.state.currentUser} />
-          }
+          {/* <Navigation currentUser={this.state.currentUser} /> */}
           <Switch>
             <Route 
               exact path='/' 
@@ -58,7 +56,10 @@ class App extends React.Component {
             <Route
               exact path='/chat/:id'
               component={ChatPage}
-              pathname='/chat/'
+            />
+            <Route
+              exact path='/newchat'
+              component={CreateChat}
             />
             <Route 
               exact path='/signin' 

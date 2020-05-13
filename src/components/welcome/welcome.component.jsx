@@ -1,9 +1,12 @@
 import React from 'react';
+import { Navigation } from '../navbar/navbar.component';
 import { Link } from 'react-router-dom';
 
 
 export const Welcome = () => {
     return (
+        <>
+        <Navigation />
         <header className="tc ph4 mt5">
             <h1 className="f3 f2-m f1-l fw2 black-90 mv3">
                 Welcome to <span className="hot-pink">Emily's App</span>
@@ -18,6 +21,7 @@ export const Welcome = () => {
                 <Link to='/register' className="f6 grow no-underline br-pill ba ph3 pv2 mb2 dib pink w4">Register</Link>
             </div>
         </header>
+        </>
     )
 }
 

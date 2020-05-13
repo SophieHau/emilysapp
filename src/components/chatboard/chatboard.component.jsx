@@ -5,7 +5,7 @@ import './chatboard.style.css';
 
 
 export class ChatBoard extends React.Component {
-    constructor() {
+    constructor(props) {
         auth.onAuthStateChanged(user => {
             if(user) {
                 const userRef = firestore.doc(`users/${user.uid}`);
@@ -14,10 +14,10 @@ export class ChatBoard extends React.Component {
                 })
             }
         })
-        super();
+        super(props);
 
         this.state = {
-            chatId: window.location.pathname.split('/')[2],
+            chatId: this.props.chatId,
             messages: [],
             messageInput: '',
             newMessage: {}
@@ -26,7 +26,7 @@ export class ChatBoard extends React.Component {
 
 
     componentDidMount = () => {
-        firestore.collection('chats').doc(this.state.chatId).collection('messages').orderBy('createdAt').limitToLast(10)
+        firestore.collection('chats').doc(this.state.chatId).collection('messages').orderBy('createdAt').limitToLast(20)
         .onSnapshot(snaphot => {
             snaphot.docChanges().forEach(change => {
                 if (change.type === "added") {
@@ -72,9 +72,10 @@ export class ChatBoard extends React.Component {
             content: this.state.messageInput,
             createdAt: new Date()
         }
-
-        firestore.collection('chats').doc(this.state.chatId).collection('messages')
-        .add(newMessage)
+        if (newMessage['content'] !== "") {
+            firestore.collection('chats').doc(this.state.chatId).collection('messages')
+            .add(newMessage)
+        }
     }
         
     
@@ -93,7 +94,7 @@ export class ChatBoard extends React.Component {
 
         return (
             <>
-            <main className="mw6 center mb5-l mb1">
+            <main className="wrapper mw6 center mb5-l mb1">
                     { messages.map(message => {
                         if (message.author === currentUser.displayName) { 
                                 return (
@@ -123,7 +124,7 @@ export class ChatBoard extends React.Component {
                         <input 
                             id="messageInput" 
                             name="messageInput"
-                            className="f6 w-75 ml1 mr1 pa2 input-reset ba b--white-20 input-reset outline-transparent" 
+                            className="f6 w-75 ml1 mr1 pa2 input-reset ba b--white-20 outline-transparent" 
                             type="text"
                             value={this.state.messageInput}
                             placeholder="Type a message..."

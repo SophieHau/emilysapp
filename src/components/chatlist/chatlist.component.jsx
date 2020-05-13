@@ -40,7 +40,7 @@ export class ChatList extends React.Component {
 				{chats.map(chat =>{
 					return (
 					<li key={chat.id} className="flex lh-copy pa2 ph0-l bb b--black-10">
-						<Link to={{ pathname:`./chat/${chat.id}` }} className="no-underline pointer">
+						<Link to={{ pathname:`./chat/${chat.id}`}} className="no-underline pointer">
 						<div className="dt">
 							<img className="dtc w2 h2 w3-ns h3-ns br-100" src="http://tachyons.io/img/cat-720.jpg" alt="" />
 							<span className="dtc v-mid fw3 pl3 f6 f5-l db black-70">{chat.name}</span>

@@ -1,5 +1,5 @@
-main{
-    height:73vh;
+.wrapper{
+    height:60vh;
     overflow-y:auto;
     position:relative;
   }
@@ -15,61 +15,61 @@ main{
 
 
   @media  (min-height: 568px) and (max-height: 639px) {
-    main {
-        height:60vh;
+    .wrapper {
+        height:79vh;
     }
   }
 
   @media (min-height: 640px) and (max-height: 666px) {
-    main {
-        height:63vh;
+    .wrapper {
+        height:81vh;
     }
   }
 
   @media (min-height: 667px) and (max-height: 730px) {
-    main {
-        height:64vh;
+    .wrapper {
+        height:82vh;
     }
   }
 
   @media (min-height: 731px) and (max-height: 735px) {
-    main {
-        height:67vh;
+    .wrapper {
+        height:83vh;
     }
   }
 
   @media (min-height: 736px) and (max-height: 811px) {
-    main {
-        height:67vh;
+    .wrapper {
+        height:83vh;
     }
   }
 
   @media (min-height: 812px) and (max-height: 822px) {
-    main {
-        height:70vh;
+    .wrapper {
+        height:85vh;
     }
   }
 
   @media (min-height: 823px) and (max-height: 980px) {
-    main {
-        height:70vh;
+    .wrapper {
+        height:85vh;
     }
   }
 
   @media (min-height: 981px) and (max-height: 1023px){
-    main {
-        height:68vh;
+    .wrapper {
+        height:83vh;
     }
   }
 
   @media (min-height: 1024px) and (max-height:1365px) {
-    main {
-        height:76vh;
+    .wrapper {
+        height:87vh;
     }
   }
 
   @media only screen and (min-height: 1366px) {
-    main {
-        height:77vh;
+    .wrapper {
+        height:86vh;
     }
   }

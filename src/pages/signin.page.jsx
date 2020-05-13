@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { auth, signInWithGoogle } from '../firebase.utils';
+import { Navigation } from '../components/navbar/navbar.component';
 
 
 class SignIn extends React.Component {
@@ -36,7 +37,9 @@ class SignIn extends React.Component {
 
     render() {
         return (
-                <article className="br3 ba b--black-10 mv3 w-90 w-50-m w-25-l mw6 shadow-5 center">
+            <>
+            <Navigation />
+                <article className="br3 ba b--black-10 w-90 w-50-m w-25-l mw6 shadow-5 center">
                     <main className="pa3 pa4-m pa4-l black-80">
                         <form className="measure center" onSubmit={this.handleSubmit}>
                             <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
@@ -88,6 +91,7 @@ class SignIn extends React.Component {
                         </form>
                     </main>
                 </article>
+            </>
         )
     }
 }
