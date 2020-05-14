@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { ContactNav } from '../components/contactnav/contactnav.component';
 import { firestore, auth } from '../firebase.utils';
 
@@ -17,7 +18,7 @@ class CreateChat extends React.Component {
 
         this.state = {
             contacts: [],
-            chat: {},
+            redirect: null
         }
     }
 
@@ -56,17 +57,26 @@ class CreateChat extends React.Component {
             participants: participantsRef,
             createdAt: new Date(),
         }
-        this.setState({ chat: newChat })
         const newChatRef = firestore.collection('chats').where("name", "==", `${newChat['name']}`)
         const newChatSnapshot = await newChatRef.get()
         if (newChatSnapshot.empty) {
             firestore.collection('chats').add(newChat)
+            const newChatSnapshot = await firestore.collection('chats').where("name", "==", `${newChat['name']}`).get()
+            const newChatId = newChatSnapshot.docs[0].id
+            this.setState({  redirect: `/chat/${newChatId}` })
+        } else {
+            const newChatId = newChatSnapshot.docs[0].id
+            this.setState({ redirect: `/chat/${newChatId}` })
         }
-        console.log(this.state.chat)
     }
 
 
     render() {
+
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+        }
+
         const { contacts } = this.state;
         return (
             <>
