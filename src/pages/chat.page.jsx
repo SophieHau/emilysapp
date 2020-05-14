@@ -4,6 +4,7 @@ import { ChatNav } from '../components/chatnav/chatnav.component';
 
 
 class ChatPage extends React.Component {
+    
     render () {
         let { id } = this.props.match.params
 
