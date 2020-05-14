@@ -81,7 +81,6 @@ class AddToChat extends React.Component {
             })
         }
 
-        console.log("whyyyyyyy")
         chatRef.update({
             participants: chatParticipants
         })
