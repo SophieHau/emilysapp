@@ -1,17 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import backIcon from '../../assets/icons/backarrow.png';
+import backIcon from '../../assets/icons/backarrow2.png';
 
-export const ContactNav = ({ chatId }) => {
+export const ContactNav = () => {
     return (
-        <nav className="dt w-90 center pt2 mb3 ml2 bb b--black-05">
-            <div className="dtc mr3 fl v-mid f6">
-                <Link to="/"><img src={backIcon} className="mt1 h2 w2 br-100 v-mid mr2" alt="arrow"/></Link> 
-                {/* <img src="http://tachyons.io/img/logo.jpg" className="mt1 h2 w2 br-100 v-mid" alt="profile"/> */}
+        <nav className="flex dt w-90 center pt2 mb3 ml2 bb b--black-05">
+            <div className="dtc v-mid f5">
+                <Link to="/"><img src={backIcon} className="mt2 br-100" alt="arrow" style={{width: '25px', height: '25px'}}/></Link> 
             </div>
-                
-            <div className="dtc v-mid fl">
-                <p className="dark-gray f6 pa0 mr3">{chatId}</p>
+            <div className="dtc v-mid center">
+                <p className="dark-gray f5 fw3 mt2 pt1">Your contacts</p>
             </div>
         </nav>
     )

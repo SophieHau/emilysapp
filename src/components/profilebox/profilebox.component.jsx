@@ -1,9 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import newChatIcon from '../../assets/icons/newchaticon.png';
-import { firestore } from '../../firebase.utils';
-
-    
 
 
 export class ProfileBox extends React.Component {
@@ -13,10 +10,6 @@ export class ProfileBox extends React.Component {
         this.state = {
             currentUser: this.props.currentUser
         }
-    }
-
-    createChatDocument = () => {
-        firestore.collection('chats').add({name: 'chat4'})
     }
 
     render () {
@@ -32,7 +25,7 @@ export class ProfileBox extends React.Component {
                 <div className="dtc fr">
                         <button className="f7 f6-l tr fw2 button-reset bg-white ba dib b--transparent dim pointer pv1 black-60 outline-transparent" type="submit">Edit</button>
                         <div className="mt2 mr1 mt4-l mt4-ns mb0-l tr">
-                            <Link to="/newchat"><img type="submit" src={newChatIcon} onClick={this.createChatDocument} className="dib pointer dim" alt="message bubble" style={{width: '25px', height: '25px'}}/></Link>
+                            <Link to="/newchat"><img type="submit" src={newChatIcon} className="dib pointer dim" alt="message bubble" style={{width: '25px', height: '25px'}}/></Link>
                         </div>
                 </div>
             </article>

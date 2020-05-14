@@ -51,7 +51,7 @@ export class ChatBoard extends React.Component {
         this.scrollToBottom();
     }
 
-    componentDidUpdate = (prevState) => {
+    componentDidUpdate = () => {
         this.scrollToBottom();
     }
 
