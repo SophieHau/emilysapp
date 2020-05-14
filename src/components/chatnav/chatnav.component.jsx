@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import backIcon from '../../assets/icons/backarrow2.png';
+import addIcon from '../../assets/icons/newchaticon.png';
 import { firestore } from '../../firebase.utils';
 
 export class ChatNav extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            chatName: ''
+            chatName: '',
+            chatId: ''
         }
     }
 
@@ -15,13 +17,14 @@ export class ChatNav extends React.Component {
         const chatRef = firestore.collection('chats').doc(`${this.props.chatId}`)
         const chatSnapshot = await chatRef.get();
         const chatName = chatSnapshot.data().name
-        this.setState({ chatName })
+        const chatId = chatSnapshot.id
+        this.setState({ chatName, chatId })
     }
 
     render() {
-        let { chatName } = this.state
+        let { chatName, chatId } = this.state
         if (chatName.length > 30) {
-            chatName = chatName.slice(0, 25)
+            chatName = chatName.slice(0, 20)
             return (
                 <nav className="dt w-90 center pt2 mb3 ml2 bb b--black-05">
                 <div className="dtc mr3 fl v-mid f6">
@@ -43,6 +46,9 @@ export class ChatNav extends React.Component {
                 </div>
                 <div className="dtc v-mid fl">
                     <p className="dark-gray f6 pa0 mr3">{chatName}</p>
+                </div>
+                <div className="dtc fr v-mid f6 mt2">
+                    <Link to={`/addtochat/${chatId}`}><img src={addIcon} className="v-mid pt1" style={{width: '25px', height: '25px'}} alt="arrow"/></Link> 
                 </div>
             </nav>
         )

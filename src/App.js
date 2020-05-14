@@ -7,7 +7,7 @@ import SignIn from './pages/signin.page';
 import Register from './pages/register.page';
 import ChatPage from './pages/chat.page';
 import CreateChat from './pages/createChat.page';
-
+import AddToChat from './pages/addToChat.page';
 
 class App extends React.Component {
   constructor() {
@@ -47,7 +47,6 @@ class App extends React.Component {
     return (
       <div className="App">
         <Router>
-          {/* <Navigation currentUser={this.state.currentUser} /> */}
           <Switch>
             <Route 
               exact path='/' 
@@ -60,6 +59,10 @@ class App extends React.Component {
             <Route
               exact path='/newchat'
               component={CreateChat}
+            />
+            <Route
+              exact path='/addtochat/:id'
+              component={AddToChat}
             />
             <Route 
               exact path='/signin' 

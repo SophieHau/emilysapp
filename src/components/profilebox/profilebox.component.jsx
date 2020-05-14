@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import newChatIcon from '../../assets/icons/newchaticon.png';
+import newChatIcon from '../../assets/icons/messageicon.png';
 
 
 export class ProfileBox extends React.Component {

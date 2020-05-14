@@ -2,10 +2,12 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { ContactNav } from '../components/contactnav/contactnav.component';
 import { firestore, auth } from '../firebase.utils';
+import _ from 'underscore';
 
 
-class CreateChat extends React.Component {
+class AddToChat extends React.Component {
     constructor(props) {
+
         auth.onAuthStateChanged(user => {
             if(user) {
                 const userRef = firestore.doc(`users/${user.uid}`);
@@ -14,11 +16,13 @@ class CreateChat extends React.Component {
                 })
             }
         })
+
         super(props)
 
         this.state = {
             contacts: [],
-            redirect: null
+            redirect: null,
+            chatId: this.props.match.params['id']
         }
     }
 
@@ -42,34 +46,47 @@ class CreateChat extends React.Component {
         })
     }
 
-    createChatDocument = async (event) => {
+    addContactToChat = async (event) => {
         event.preventDefault();
 
-        const userRef = firestore.doc(`users/${auth.currentUser.uid}`)
-        const participantsRef = [userRef]
-        const newParticipantId = event.target.value
-        const newParticipantRef = firestore.doc(`users/${newParticipantId}`)
-        participantsRef.push(newParticipantRef)
-        const newParticipantSnapshot = await newParticipantRef.get();
-        const chatName = await newParticipantSnapshot.data().displayName
+        const newParticipantRef = firestore.doc(`users/${event.target.value}`);
+        const chatRef = firestore.doc(`chats/${this.state.chatId}`);
+        const chatSnapshot = await chatRef.get();
+        const chatParticipants = chatSnapshot.data().participants;
+        const participantsId = [];
 
-        const newChat = {
-            name: chatName,
-            participants: participantsRef,
-            createdAt: new Date(),
+        chatParticipants.forEach(doc => {
+            participantsId.push(doc.id)
+        })
+
+
+        if (participantsId.includes(newParticipantRef.id)) {
+            this.setState({ redirect: `/chat/${this.state.chatId}`})
+        } 
+
+        else if (!participantsId.includes(newParticipantRef.id)) {
+            chatParticipants.push(newParticipantRef)
+            participantsId.push(newParticipantRef.id)
+            const dbChatsRef = firestore.collection('chats')
+                .where("participants", "array-contains", newParticipantRef)
+            const dbChatsSnapshot = await dbChatsRef.get();
+            dbChatsSnapshot.forEach(doc => {
+                const participantsIdList = []
+                doc.data().participants.forEach(participant => {
+                    participantsIdList.push(participant.id)
+                })
+                if (_.difference(participantsId, participantsIdList).length === 0) {
+                    this.setState({ redirect: `/chat/${doc.id}`})
+                } 
+            })
         }
 
-        const newChatRef = firestore.collection('chats').where("name", "==", `${newChat['name']}`)
-        const newChatSnapshot = await newChatRef.get()
-        if (newChatSnapshot.empty) {
-            firestore.collection('chats').add(newChat)
-            const newChatSnapshot = await firestore.collection('chats').where("name", "==", `${newChat['name']}`).get()
-            const newChatId = newChatSnapshot.docs[0].id
-            this.setState({  redirect: `/chat/${newChatId}` })
-        } else {
-            const newChatId = newChatSnapshot.docs[0].id
-            this.setState({ redirect: `/chat/${newChatId}` })
-        }
+        console.log("whyyyyyyy")
+        chatRef.update({
+            participants: chatParticipants
+        })
+        
+        this.setState({ redirect: `/chat/${this.state.chatId}`})
     }
 
     render() {
@@ -98,7 +115,7 @@ class CreateChat extends React.Component {
                                 <button
                                     className="f3 button-reset pb1 pl2 pr2 bg-white ba b--black-10 dim pointer black-60 br-100 outline-transparent"
                                     value={contact.id}
-                                    onClick={this.createChatDocument}
+                                    onClick={this.addContactToChat}
                                 >
                                     +
                                 </button>
@@ -113,4 +130,4 @@ class CreateChat extends React.Component {
     }
 }
 
-export default CreateChat;
+export default AddToChat;
