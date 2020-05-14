@@ -2,23 +2,44 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import backIcon from '../../assets/icons/backarrow2.png';
 import addIcon from '../../assets/icons/newchaticon.png';
-import { firestore } from '../../firebase.utils';
+import { firestore, auth } from '../../firebase.utils';
+
 
 export class ChatNav extends React.Component {
     constructor(props) {
+
+        auth.onAuthStateChanged(user => {
+            if(user) {
+                const userRef = firestore.doc(`users/${user.uid}`);
+                user = userRef.get().then(user => {
+                    this.state['currentUser'] = user.data()
+                })
+            }
+        })
+
         super(props);
         this.state = {
             chatName: '',
-            chatId: ''
+            chatId: this.props.chatId,
         }
     }
 
-    componentDidMount = async () => {
-        const chatRef = firestore.collection('chats').doc(`${this.props.chatId}`)
-        const chatSnapshot = await chatRef.get();
-        const chatName = chatSnapshot.data().name
-        const chatId = chatSnapshot.id
-        this.setState({ chatName, chatId })
+    componentDidMount = () => {
+        const chatRef = firestore.collection('chats').doc(`${this.state.chatId}`)
+        chatRef.get()
+        .then (res => {
+            const chatParticipants = res.data().participants
+            const partsnames = []
+            chatParticipants.forEach(doc => {
+                firestore.collection('users').doc(`${doc.id}`).get()
+                .then(part => {
+                    if (part.id !== auth.currentUser.uid) {
+                        partsnames.push(part.data().displayName)
+                        this.setState({ chatName: partsnames.join(", ") })
+                    }
+                })
+            })
+        })
     }
 
     render() {

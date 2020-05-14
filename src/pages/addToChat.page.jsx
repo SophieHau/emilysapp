@@ -82,7 +82,7 @@ class AddToChat extends React.Component {
         }
 
         chatRef.update({
-            participants: chatParticipants
+            participants: chatParticipants,
         })
         
         this.setState({ redirect: `/chat/${this.state.chatId}`})

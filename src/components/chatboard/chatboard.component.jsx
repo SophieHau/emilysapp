@@ -102,7 +102,7 @@ export class ChatBoard extends React.Component {
                                 return (
                                     <article key={message.id} className="dib w-100">
                                         <div key={message.id} className="dtc v-mid pl5 tr fr">
-                                        <h1 key={message.id} className="mr2 f6 tl fw4 br4 ph3 pv2 dib bg-washed-green mid-gray shadow-4 fr">{message.content} <p className="tr f7 fw2 mb0 mt2 black-60">{message.createdAt.substring(16,21)}</p></h1>
+                                        <h1 key={message.id} className="mr2 f6 tl fw4 br4 ph3 pv2 dib bg-washed-green mid-gray shadow-4 fr">{message.content} <p className="tr f7 fw2 mb0 mt1 black-60">{message.createdAt.substring(16,21)}</p></h1>
                                         </div>
                                     </article>
                                 );

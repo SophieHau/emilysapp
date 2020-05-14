@@ -1,13 +1,22 @@
 import React from 'react';
-import { firestore } from '../../firebase.utils';
+import { firestore, auth } from '../../firebase.utils';
 import { Link } from 'react-router-dom';
 
 
 export class ChatList extends React.Component {
 	constructor(props) {
+
+		auth.onAuthStateChanged(user => {
+            if(user) {
+                const userRef = firestore.doc(`users/${user.uid}`);
+                user = userRef.get().then(user => {
+                    this.state['currentUser'] = user.data()
+                })
+            }
+        })
+
 		super(props);
 		this.state = {
-			currentUser: this.props.currentUser,
 			chats: []
 		}
 	}
@@ -15,7 +24,7 @@ export class ChatList extends React.Component {
 
 	componentDidMount = () => {
 		const chatListForCurrentUser = []
-		const participantDocRef = firestore.collection('users').doc(`${this.state.currentUser.id}`);
+		const participantDocRef = firestore.collection('users').doc(`${auth.currentUser.uid}`);
 		
         firestore.collection('chats').where("participants", "array-contains", participantDocRef).get()
          .then(response => {
