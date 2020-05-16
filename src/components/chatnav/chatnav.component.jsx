@@ -36,6 +36,9 @@ export class ChatNav extends React.Component {
                     if (part.id !== auth.currentUser.uid) {
                         partsnames.push(part.data().displayName)
                         this.setState({ chatName: partsnames.join(", ") })
+                        firestore.doc(`chats/${this.state.chatId}`).update({
+                            name: this.state.chatName
+                        })
                     }
                 })
             })
