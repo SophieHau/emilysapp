@@ -42,19 +42,23 @@ class CreateChat extends React.Component {
 
             this.state.groupMembers.push(currentUser)
 
-            const friends = snapshot.data().friends
-            friends.forEach(friend => {
-                const contact = {
-                    id: friend.id,
-                    status: "+"
-                }
-                firestore.collection('users').doc(`${friend.id}`)
-                .onSnapshot(snapshot => {
-                    contact['displayName'] = snapshot.data().displayName
-                    contactList.push(contact)
-                    this.setState({ contacts: contactList})
+            
+            if (snapshot.data().friends) {
+                const friends = snapshot.data().friends
+                friends.forEach(friend => {
+                    const contact = {
+                        id: friend.id,
+                        status: "+"
+                    }
+                    firestore.collection('users').doc(`${friend.id}`)
+                    .onSnapshot(snapshot => {
+                        contact['displayName'] = snapshot.data().displayName
+                        contactList.push(contact)
+                        this.setState({ contacts: contactList})
+                    })
                 })
-            })
+            } 
+            
         })
         const chatList = []
         const dbChats = firestore.collection('chats').where("participants", "array-contains", currentUserRef)
@@ -181,6 +185,22 @@ class CreateChat extends React.Component {
         }
 
         const { contacts, groupMembers } = this.state;
+
+        if (contacts.length === 0) {
+           return(
+               <>
+               <ContactNav />
+               <header className="tc ph4 mt5">
+                    <h1 className="f4 f2-m f1-l fw2 black-90 mv3">
+                        You don't have any contact yet...
+                    </h1>
+                    <h2 className="f5 f4-m f3-l fw2 black-50 mt0 lh-copy">
+                        You can find your friends by clicking on the icon in the top right corner!
+                    </h2>
+                </header>
+                </>
+           ) 
+        }
 
         return (
             <>
