@@ -20,7 +20,6 @@ export class ProfileBox extends React.Component {
                 </div>
                 <div className="dtc v-mid pl3">
                     <h1 className="f5 f3-l fw2 lh-title black mv0">Hi {this.state.currentUser.displayName}!</h1>
-                    <h2 className="f7 f5-l mt2 fw2 mt0 mb0 black-60">Your status: "{this.state.currentUser.status}"</h2>
                 </div>
                 <div className="dtc fr">
                         <button className="f7 f6-l tr fw2 button-reset bg-white ba dib b--transparent dim pointer pv1 black-60 outline-transparent" type="submit">Edit</button>

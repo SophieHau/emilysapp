@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
+import { colors } from './assets/js/colorlist';
 
 const config = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -31,6 +32,9 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   const userRef = firestore.doc(`users/${userAuth.uid}`);
   const snapShot = await userRef.get();
 
+  const randIndex = Math.floor((Math.random() * colors.length) + 1);
+  const color = colors[randIndex]
+
   if (!snapShot.exists) {
       const { displayName, email } = userAuth;
       const createdAt = new Date();
@@ -40,6 +44,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
               displayName,
               email,
               createdAt,
+              color,
               ...additionalData
           })
       } catch(error){
