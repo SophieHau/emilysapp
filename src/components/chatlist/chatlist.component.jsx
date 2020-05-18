@@ -1,19 +1,11 @@
 import React from 'react';
 import { firestore, auth } from '../../firebase.utils';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
 
 
 export class ChatList extends React.Component {
 	constructor(props) {
-
-		auth.onAuthStateChanged(user => {
-            if(user) {
-                const userRef = firestore.doc(`users/${user.uid}`);
-                user = userRef.get().then(user => {
-                    this.state['currentUser'] = user.data()
-                })
-            }
-        })
 
 		super(props);
 		this.state = {
@@ -22,9 +14,10 @@ export class ChatList extends React.Component {
 	}
 	
 
-	componentDidMount = () => {
+	componentDidMount = async () => {
 		const chatListForCurrentUser = []
 		const participantDocRef = firestore.collection('users').doc(`${auth.currentUser.uid}`);
+		const currentUserName = await participantDocRef.get().then(res => {return res.data().displayName})
 		
         firestore.collection('chats').where("participants", "array-contains", participantDocRef).get()
          .then(response => {
@@ -35,7 +28,7 @@ export class ChatList extends React.Component {
 						participants: doc.data().participants
 					})
              })
-             this.setState({chats: chatListForCurrentUser})
+             this.setState({chats: chatListForCurrentUser, currentUserName})
          })
          .catch (error => {
              console.log(error)
@@ -43,10 +36,14 @@ export class ChatList extends React.Component {
     }
 
 	render () {
-		const { chats } = this.state;
+		const { chats, currentUserName } = this.state;
 		return (
 			<ul className="center mw6 w-90 list pl0 mt3 measure">
 				{chats.map(chat =>{
+					if (chat.name.includes(currentUserName)) {
+						chat.name = chat.name.replace(currentUserName, "")
+						chat.name = _.trim(chat.name, ' , ')
+					}
 					return (
 					<li key={chat.id} className="flex lh-copy pa2 ph0-l bb b--black-10">
 						<Link to={{ pathname:`./chat/${chat.id}`}} className="no-underline pointer">

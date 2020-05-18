@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import backIcon from '../../assets/icons/backarrow2.png';
 import addIcon from '../../assets/icons/newchaticon.png';
 import { firestore, auth } from '../../firebase.utils';
+import _ from 'lodash';
 
 
 export class ChatNav extends React.Component {
@@ -25,10 +26,18 @@ export class ChatNav extends React.Component {
         }
     }
     
-    componentDidMount = () => {
+    componentDidMount = async () => {
+        const currentUserRef = firestore.doc(`users/${auth.currentUser.uid}`)
+        const currentUserSnap = await currentUserRef.get()
+        const currentUserName = currentUserSnap.data().displayName
         firestore.collection('chats').doc(`${this.state.chatId}`)
         .onSnapshot(snap => {
-            this.setState({ chatName: snap.data().name })
+            let name = snap.data().name
+            if (name.includes(currentUserName)) {
+                name = name.replace(currentUserName, "@You")
+                name = _.trim(name, ', ')
+            }
+            this.setState({ chatName: name })
         })
     }
 
