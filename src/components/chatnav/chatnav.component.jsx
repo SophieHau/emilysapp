@@ -18,30 +18,17 @@ export class ChatNav extends React.Component {
         })
 
         super(props);
+
         this.state = {
-            chatName: '',
             chatId: this.props.chatId,
+            chatName: ''
         }
     }
-
+    
     componentDidMount = () => {
-        const chatRef = firestore.collection('chats').doc(`${this.state.chatId}`)
-        chatRef.get()
-        .then (res => {
-            const chatParticipants = res.data().participants
-            const partsnames = []
-            chatParticipants.forEach(doc => {
-                firestore.collection('users').doc(`${doc.id}`).get()
-                .then(part => {
-                    if (part.id !== auth.currentUser.uid) {
-                        partsnames.push(part.data().displayName)
-                        this.setState({ chatName: partsnames.join(", ") })
-                        firestore.doc(`chats/${this.state.chatId}`).update({
-                            name: this.state.chatName
-                        })
-                    }
-                })
-            })
+        firestore.collection('chats').doc(`${this.state.chatId}`)
+        .onSnapshot(snap => {
+            this.setState({ chatName: snap.data().name })
         })
     }
 

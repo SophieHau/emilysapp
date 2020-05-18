@@ -25,7 +25,7 @@ export class ProfileBox extends React.Component {
                 <div className="dtc fr">
                         <button className="f7 f6-l tr fw2 button-reset bg-white ba dib b--transparent dim pointer pv1 black-60 outline-transparent" type="submit">Edit</button>
                         <div className="mt2 mr1 mt4-l mt4-ns mb0-l tr">
-                            <Link to="/newchat"><img type="submit" src={newChatIcon} className="dib pointer dim" alt="message bubble" style={{width: '20px', height: '20px'}}/></Link>
+                            <Link to="/createchat"><img type="submit" src={newChatIcon} className="dib pointer dim" alt="message bubble" style={{width: '20px', height: '20px'}} /></Link>
                         </div>
                 </div>
             </article>

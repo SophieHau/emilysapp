@@ -28,7 +28,7 @@ export class ChatList extends React.Component {
 		
         firestore.collection('chats').where("participants", "array-contains", participantDocRef).get()
          .then(response => {
-             response.forEach(doc => {					
+             response.forEach(doc => {		
 					chatListForCurrentUser.push({
 						id: doc.id,
 						name: doc.data().name,
