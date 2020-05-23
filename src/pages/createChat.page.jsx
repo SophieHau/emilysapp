@@ -42,7 +42,6 @@ class CreateChat extends React.Component {
 
             this.state.groupMembers.push(currentUser)
 
-            
             if (snapshot.data().friends) {
                 const friends = snapshot.data().friends
                 friends.forEach(friend => {
@@ -160,14 +159,11 @@ class CreateChat extends React.Component {
                 })
                 const diff1 = _.difference(participantsId, partsId)
                 const diff2 = _.difference(partsId, participantsId)
-                console.log(diff1)
-                console.log(diff2)
                 if (diff1.length === 0 && diff2.length === 0) {
                     duplicates.push(chat.id)
                 }
                 
             })
-            console.log(duplicates)
             if (duplicates.length > 0 && duplicates.length < (groupMembers.length + 1)) {
                 this.setState({ redirect: `/chat/${duplicates[0]}`})
             } else {
@@ -221,11 +217,11 @@ class CreateChat extends React.Component {
                         required
                     />
                     <button
-                            className="fr mr2 bg-transparent ba b--white-20 outline-transparent v-mid" 
+                            className="fr pointer dim mr2 bg-transparent ba b--white-20 outline-transparent v-mid" 
                             type="submit"
                             onClick={this.onSubmit}
                         >
-                            <img src={checkIcon} alt="paper plane" style={{width: '25px'}}/>
+                            <img src={checkIcon} alt="check mark" style={{width: '25px'}}/>
                     </button>
                 </div>
              </form>

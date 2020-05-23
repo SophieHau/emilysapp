@@ -7,6 +7,7 @@ import SignIn from './pages/signin.page';
 import Register from './pages/register.page';
 import ChatPage from './pages/chat.page';
 import CreateChat from './pages/createChat.page';
+import ContactSearch from './pages/contactsearch.page';
 
 class App extends React.Component {
   constructor() {
@@ -62,6 +63,10 @@ class App extends React.Component {
             <Route
               exact path='/createchat'
               component={CreateChat}
+            />
+            <Route
+              exact path='/searchcontact'
+              component={ContactSearch}
             />
             <Route 
               exact path='/signin' 

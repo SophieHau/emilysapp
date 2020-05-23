@@ -13,8 +13,9 @@ export const ContactNav = () => {
             <div className="v-mid ml3 mid-gray dtc">
                 <p className="dark-gray f5 fw3 mt2 tl pt1">New chat</p>
             </div>
+            
             <div className="dtc v-mid w-50 w-75-ns tr fw2">
-                <Link to="/"><img src={searchIcon} className="mt2 br-100" alt="arrow" style={{width: '25px', height: '25px'}}/></Link> 
+                <Link to="/searchcontact"><img src={searchIcon} className="br-100 dib ml3" alt="arrow" style={{width: '25px', height: '25px'}}/></Link> 
             </div>
         </nav>
     )
