@@ -4,7 +4,7 @@ import Logo from '../logo/logo.component';
 import { auth } from '../../firebase.utils';
 
 
-export const Navigation = ({ currentUser }) => {
+const Navigation = ({ currentUser }) => {
     if (currentUser) {
         return(
         <nav className="dt w-100 border-box pa3 ph5-ns">
@@ -31,3 +31,4 @@ export const Navigation = ({ currentUser }) => {
     }    
 };
 
+export default Navigation;

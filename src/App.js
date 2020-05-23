@@ -8,6 +8,7 @@ import Register from './pages/register.page';
 import ChatPage from './pages/chat.page';
 import CreateChat from './pages/createChat.page';
 import ContactSearch from './pages/contactsearch.page';
+import EditPicture from './pages/editpicture.page';
 
 class App extends React.Component {
   constructor() {
@@ -67,6 +68,10 @@ class App extends React.Component {
             <Route
               exact path='/searchcontact'
               component={ContactSearch}
+            />
+            <Route
+              exact path='/picture'
+              render={(props) => <EditPicture {...props} currentUser={this.state.currentUser} />}
             />
             <Route 
               exact path='/signin' 

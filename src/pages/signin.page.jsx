@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { auth, signInWithGoogle } from '../firebase.utils';
-import { Navigation } from '../components/navbar/navbar.component';
+import Navigation from '../components/navbar/navbar.component';
 
 
 class SignIn extends React.Component {

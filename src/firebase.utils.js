@@ -19,6 +19,7 @@ firebase.initializeApp(config);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 export const storage = firebase.storage();
+export const storageRef = storage.ref();
 
 
 const provider = new firebase.auth.GoogleAuthProvider();
@@ -53,5 +54,12 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   }
   return userRef;
 };
+
+export const getProfilePicUrl = async (user) => {
+  const currentImagePath = user.imagePath
+  const currentImageRef = storageRef.child(currentImagePath)
+  const currentImageUrl = await currentImageRef.getDownloadURL()
+  return currentImageUrl
+}
 
 export default firebase;
