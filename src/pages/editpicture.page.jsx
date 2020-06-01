@@ -14,7 +14,7 @@ class EditPicture extends React.Component {
             displayName: this.props.currentUser.displayName,
             currentImage: {},
             imagePath: '',
-            compressedImage: {},
+            compressedImage: null,
             redirect: null
         }
     }
@@ -35,6 +35,7 @@ class EditPicture extends React.Component {
         try {
           const compressedFile = await imageCompression(imageFile, options);
           this.setState({ imagePath: URL.createObjectURL(compressedFile), compressedImage: compressedFile })
+          console.log(this.state.compressedImage)
         } catch (error) {
             console.log(error);
         }
@@ -50,19 +51,34 @@ class EditPicture extends React.Component {
         fileInput.click();
     }
 
+    handleUpdateProfilePic = async (userRef) => {
+        const profilePicRef = await storageRef.child(`${userRef.id}/images/profile/${this.state.compressedImage.name}`)
+            await profilePicRef.put(this.state.compressedImage)
+            console.log(profilePicRef)
+
+            await userRef.update({
+                imagePath: profilePicRef.fullPath
+            })
+    }
+
     onSubmit = async (event) => {
         event.preventDefault();
         const userRef = firestore.doc(`users/${auth.currentUser.uid}`)
-        const profilePicRef = storageRef.child(`${userRef.id}/images/profile/${this.state.compressedImage.name}`)
-        await profilePicRef.put(this.state.compressedImage)
-
         await userRef.update({
-            displayName: this.state.displayName,
-            imagePath: profilePicRef.fullPath
+                displayName: this.state.displayName
         })
+        if (this.state.compressedImage !== null) {
+            const userRef = firestore.doc(`users/${auth.currentUser.uid}`)
+            await this.handleUpdateProfilePic(userRef)
+        }
         this.setState({redirect: '/'})
     }
 
+    handleCancel = (event) => {
+        event.preventDefault();
+        this.setState({redirect: '/'})
+    }
+       
     render() {
         if (this.state.redirect) {
             return <Redirect to={this.state.redirect} />
@@ -72,21 +88,26 @@ class EditPicture extends React.Component {
         return (
             <>
             <Navigation currentUser={currentUser}/>
-            <section className="tc pa3 pa5-ns w-100">
-                <article className="relative ba b--black-20 br4 pa4 mw6 center w-100 shadow-5">
-                    <img alt="" src={imagePath}  className="db"/>
-                    <div className="pa2 bt b--black-20">
-                        <input className="mt3 br-4 f4 fw2 w-75 ml1 mr1 pa2 input-reset ba b--white-20 outline-transparent w-90" value={displayName} name="displayName" onChange={this.handleChange}/>
+            <section className="tc pa2 pa5-ns w-100">
+                <article className="relative ba b--black-20 br4 pa3 mw6 center w-100 shadow-5">
+                    <img alt="" className="center h5 w5" src={imagePath}  style={{objectFit: 'cover'}} />
+                    <div className="pa1 b--black-20 db center">
+                        <input className="center mt2 br-4 f4 fw2 ml1 mr1 pa2 input-reset ba b--white-20 outline-transparent w-50" value={displayName} name="displayName" onChange={this.handleChange} autoFocus/>
+                        <div>
+                        <div>
+                        <button type="submit" onClick={this.onSubmit} className="mt3 outline-transparent b--hot-pink bg-transparent f6 grow no-underline br-pill ba ph3 pv2 mb2 pink w4 mt0">Save</button>
+                        </div>
                         <button 
-                            className="pointer outline-transparent b--pink mr2 ml2 bg-transparent f6 grow no-underline br-pill ba ph3 pv2 mb2 hot-pink w4" 
+                            className="pointer outline-transparent b--pink mt1 bg-transparent f6 grow no-underline br-pill ba ph3 pv2 hot-pink w4" 
                             type="submit"
-                            onClick={this.handleSubmit}
+                            onClick={this.handleCancel}
                         >
                             Cancel
                         </button>
-                        <button type="submit" onClick={this.onSubmit} className="outline-transparent b--hot-pink mr2 ml2 bg-transparent f6 grow no-underline br-pill ba ph3 pv2 mb2 pink w4 mt3">Save</button>
+                        </div>
+                        
                     </div>
-                    <img onClick={this.handleOpenImageSelect} className="child absolute top-1 o-50 right-1 grow no-underline br-100 w2 h2 pa2 lh-solid b" src={editIcon} alt="" />
+                    <img onClick={this.handleOpenImageSelect} className="child absolute top-0 o-50 right-0 grow bg-white no-underline br-100 w2 h2 pa2 lh-solid b" src={editIcon} alt="" />
                     <input type="file" hidden id="profilePic" accept="image/*" onChange={this.handleImageSelect} />
                 </article>
             </section>

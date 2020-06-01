@@ -5,6 +5,7 @@ import { firestore, auth } from '../firebase.utils';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import checkIcon from '../assets/icons/checkicon.png';
+import '../components/chatboard/chatboard.style.css';
 
 
 class CreateChat extends React.Component {
@@ -241,7 +242,7 @@ class CreateChat extends React.Component {
                     })}
                     </div>
                 </article>
-            <main className="mw6 center mt3">
+            <main className="mw6 center mt3 wrapper">
                 { contacts.map(contact => {
                         return(
                             <article key={contact.id} className="dt w-90 center bb b--black-05 pb2 mt2">

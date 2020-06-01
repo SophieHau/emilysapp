@@ -3,6 +3,7 @@ import { ContactNav } from '../components/contactnav/contactnav.component';
 import searchIcon from '../assets/icons/searchicon.png';
 import { firestore, auth } from '../firebase.utils';
 import { Redirect } from 'react-router-dom';
+import '../components/chatboard/chatboard.style.css';
 
 
 class ContactSearch extends React.Component {
@@ -111,7 +112,7 @@ class ContactSearch extends React.Component {
                         <h4 className="f6 fw3 black-60 dib">Search results:</h4>
                     </div>
                 </article>
-            <main className="mw6 center mt3">
+            <main className="mw6 center mt3 wrapper">
                 <article className="dt w-90 center bb b--black-05 pb2 mt2">
                     <div className="dtc w2 w3-ns v-mid">
                         <img src="http://mrmrs.github.io/photos/p/2.jpg" alt="" className="ba b--black-10 db br-100 w2 w3-ns h2 h3-ns"/>

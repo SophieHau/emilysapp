@@ -2,6 +2,7 @@ import React from 'react';
 import { firestore, auth } from '../../firebase.utils';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
+import '../chatboard/chatboard.style.css';
 
 
 export class ChatList extends React.Component {
@@ -12,7 +13,7 @@ export class ChatList extends React.Component {
 			chats: []
 		}
 	}
-	
+
 
 	componentDidMount = async () => {
 		const chatListForCurrentUser = []
@@ -38,6 +39,7 @@ export class ChatList extends React.Component {
 	render () {
 		const { chats, currentUserName } = this.state;
 		return (
+			<main className="wrapper">
 			<ul className="center mw6 w-90 list pl0 mt3 measure">
 				{chats.map(chat =>{
 					if (chat.name.includes(currentUserName)) {
@@ -48,7 +50,7 @@ export class ChatList extends React.Component {
 					<li key={chat.id} className="flex lh-copy pa2 ph0-l bb b--black-10">
 						<Link to={{ pathname:`./chat/${chat.id}`}} className="no-underline pointer">
 						<div className="dt">
-							<img className="dtc w2 h2 w3-ns h3-ns br-100" src="http://tachyons.io/img/cat-720.jpg" alt="" />
+							<img className="dtc w2 h2 w3-ns h3-ns br-100" style={{objectFit: 'cover'}} src="http://tachyons.io/img/cat-720.jpg" alt="" />
 							<span className="dtc v-mid fw3 pl3 f6 f5-l db black-70">{chat.name}</span>
 						</div>
 						</Link>
@@ -57,6 +59,7 @@ export class ChatList extends React.Component {
 					}
 				)}
 			</ul>
+			</main>
 		)
 	}
 }
