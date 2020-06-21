@@ -14,9 +14,9 @@ export const ContactNav = () => {
                 <p className="dark-gray f5 fw3 mt2 tl pt1">New chat</p>
             </div>
             
-            <div className="dtc v-mid w-50 w-75-ns tr fw2">
+            {/* <div className="dtc v-mid w-50 w-75-ns tr fw2">
                 <Link to="/searchcontact"><img src={searchIcon} className="br-100 dib ml3" alt="arrow" style={{width: '25px', height: '25px'}}/></Link> 
-            </div>
+            </div> */}
         </nav>
     )
 }

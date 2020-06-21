@@ -89,13 +89,17 @@ export class ChatBoard extends React.Component {
         this.messagesEnd.scrollIntoView();
     }
 
+    onFocus=(event) => {
+        event.target.setAttribute('autocomplete', 'off');
+    }
+
     render () {
         const { messages, currentUser } = this.state;
         this.sortArray(messages)
 
         return (
             <>
-            <main className="wrapper mw6 center mb5-l mb1">
+            <main className="wrapper w-90 center mb5-l mb1">
                     { messages.map(message => {
                         if (message.author === currentUser.displayName) { 
                                 return (
@@ -120,7 +124,7 @@ export class ChatBoard extends React.Component {
                         ref={(el) => { this.messagesEnd = el; }}>
                     </div>
             </main>
-            <form className="circle-form mw6 fn bg-white center dib w-90 mb5-l mb1" onSubmit={this.createMessageDocument}>
+            <form className="circle-form mw6 fn bg-white center dib w-90 mb5-l mb3" onSubmit={this.createMessageDocument}>
                     <div className="pb1 pt1 ba b--black-20 br4">
                         <input 
                             id="messageInput" 
@@ -131,6 +135,7 @@ export class ChatBoard extends React.Component {
                             placeholder="Type a message..."
                             onChange={this.handleChange}
                             autoFocus
+                            onFocus={this.onFocus}
                         />
                         <button
                             className="mr1 fr bg-transparent ba b--white-20 outline-transparent v-mid" 

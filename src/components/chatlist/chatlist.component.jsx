@@ -1,5 +1,5 @@
 import React from 'react';
-import { firestore, auth } from '../../firebase.utils';
+import { firestore, auth, storageRef } from '../../firebase.utils';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import '../chatboard/chatboard.style.css';
@@ -15,25 +15,61 @@ export class ChatList extends React.Component {
 	}
 
 
+	loadImageUrl = async (imagePath) => {
+		const currentImageRef = storageRef.child(imagePath)
+		const currentImageUrl = await currentImageRef.getDownloadURL()
+		return currentImageUrl
+	}
+
+	loadChats = (list, id, images) => {
+		if (images.length === 1) {
+			let chat = {
+				id,
+				name: list.toString(),
+				image: images
+			}
+
+			return chat
+		}
+
+		let chat = {
+			id,
+			name: list.toString()
+		}
+		return chat
+	}
+			
 	componentDidMount = async () => {
-		const chatListForCurrentUser = []
 		const participantDocRef = firestore.collection('users').doc(`${auth.currentUser.uid}`);
 		const currentUserName = await participantDocRef.get().then(res => {return res.data().displayName})
-		
-        firestore.collection('chats').where("participants", "array-contains", participantDocRef).get()
-         .then(response => {
-             response.forEach(doc => {		
-					chatListForCurrentUser.push({
-						id: doc.id,
-						name: doc.data().name,
-						participants: doc.data().participants
+		this.setState({currentUserName})
+		let chats = []
+		const chatsRef = firestore.collection('chats').where("participants", "array-contains", participantDocRef);
+		chatsRef.onSnapshot(snapshot => {
+			snapshot.docChanges().forEach(change => {
+				if (change.type === 'added') {
+					const participantsRef = change.doc.data().participants
+					let displayNameList = []
+					let images = []
+
+					participantsRef.forEach(ref => {
+						ref.get().then(async res => {
+							if (!res.data().imagePath.includes(`${auth.currentUser.uid}`)) {
+								const path = await this.loadImageUrl(res.data().imagePath.toString())
+								images.push(path)
+							}
+							displayNameList.push(` ${res.data().displayName}`)
+						}).then(()=> {
+							if (displayNameList.length === participantsRef.length) {
+								const newchat = this.loadChats(displayNameList, change.doc.id, images)
+								chats.push(newchat)
+								this.setState({chats})
+							}
+						})								
 					})
-             })
-             this.setState({chats: chatListForCurrentUser, currentUserName})
-         })
-         .catch (error => {
-             console.log(error)
-         })
+				}
+			})
+		})
     }
 
 	render () {
@@ -50,7 +86,7 @@ export class ChatList extends React.Component {
 					<li key={chat.id} className="flex lh-copy pa2 ph0-l bb b--black-10">
 						<Link to={{ pathname:`./chat/${chat.id}`}} className="no-underline pointer">
 						<div className="dt">
-							<img className="dtc w2 h2 w3-ns h3-ns br-100" style={{objectFit: 'cover'}} src="http://tachyons.io/img/cat-720.jpg" alt="" />
+							<img className="dtc w2 h2 w3-ns h3-ns br-100" style={{objectFit: 'cover'}} src={chat.image} alt="" />
 							<span className="dtc v-mid fw3 pl3 f6 f5-l db black-70">{chat.name}</span>
 						</div>
 						</Link>

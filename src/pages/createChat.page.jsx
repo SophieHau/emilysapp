@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { ContactNav } from '../components/contactnav/contactnav.component';
-import { firestore, auth } from '../firebase.utils';
+import { firestore, auth, getProfilePicUrl } from '../firebase.utils';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import checkIcon from '../assets/icons/checkicon.png';
@@ -51,8 +51,9 @@ class CreateChat extends React.Component {
                         status: "+"
                     }
                     firestore.collection('users').doc(`${friend.id}`)
-                    .onSnapshot(snapshot => {
+                    .onSnapshot(async snapshot => {
                         contact['displayName'] = snapshot.data().displayName
+                        contact['image'] = await getProfilePicUrl(snapshot.data())
                         contactList.push(contact)
                         this.setState({ contacts: contactList})
                     })
@@ -88,14 +89,15 @@ class CreateChat extends React.Component {
         const { groupMembers, contacts } = this.state;
 
 
-        contacts.forEach(contact => {
+        contacts.forEach(async contact => {
             if (contact.id === newParticipantSnapshot.id && contact.status === "+") {
                 contact.status = "–"
 
                 const newMember = {
                     id: newParticipantSnapshot.id,
                     status: "–",
-                    displayName: newParticipantSnapshot.data().displayName
+                    displayName: newParticipantSnapshot.data().displayName,
+                    image: await getProfilePicUrl(newParticipantSnapshot.data())
                 }
 
                 const duplicate = []
@@ -141,9 +143,9 @@ class CreateChat extends React.Component {
             participantsRef.push(memberRef)
         })
 
-        if (groupName === "") {
-            groupName = participantsNames.join(', ')
-        }
+        // if (groupName === "") {
+        //     groupName = participantsNames.join(', ')
+        // }
 
         const newChat = {
             name: groupName,
@@ -247,7 +249,7 @@ class CreateChat extends React.Component {
                         return(
                             <article key={contact.id} className="dt w-90 center bb b--black-05 pb2 mt2">
                                 <div className="dtc w2 w3-ns v-mid">
-                                    <img src="http://mrmrs.github.io/photos/p/2.jpg" alt="" className="ba b--black-10 db br-100 w2 w3-ns h2 h3-ns"/>
+                                    <img src={contact.image} alt="" className="ba b--black-10 db br-100 w2 w3-ns h2 h3-ns" style={{objectFit: 'cover'}}/>
                                 </div>
                                 <div className="mt3 dtc v-mid pl3">
                                     <h1 className="tl f6 f5-ns fw3 lh-title black mv0">{contact.displayName}</h1>
