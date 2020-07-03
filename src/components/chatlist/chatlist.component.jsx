@@ -86,8 +86,8 @@ export class ChatList extends React.Component {
 					<li key={chat.id} className="flex lh-copy pa2 ph0-l bb b--black-10">
 						<Link to={{ pathname:`./chat/${chat.id}`}} className="no-underline pointer">
 						<div className="dt">
-							<img className="dtc w2 h2 w3-ns h3-ns br-100" style={{objectFit: 'cover'}} src={chat.image} alt="" />
-							<span className="dtc v-mid fw3 pl3 f6 f5-l db black-70">{chat.name}</span>
+							<img className="dtc w3 h3 br-100" style={{objectFit: 'cover'}} src={chat.image} alt="" />
+							<span className="dtc v-mid fw3 pl3 f5 db black-70">{chat.name}</span>
 						</div>
 						</Link>
 					</li>

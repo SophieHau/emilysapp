@@ -1,6 +1,6 @@
 .wrapper{
     height:60vh;
-    overflow-y:auto;
+    overflow-y: auto;
     position:relative;
   }
 
@@ -13,46 +13,75 @@
     z-index:2;
   }
 
-
-  @media  (min-height: 568px) and (max-height: 639px) {
+  @media (min-height: 200px) and (max-height: 239px) {
     .wrapper {
-        height:79vh;
+        height:30vh;
+    }
+  }
+
+  @media (min-height: 240px) and (max-height: 291px) {
+    .wrapper {
+        height:45vh;
+    }
+  }
+
+  @media (min-height: 292px) and (max-height: 327px) {
+    .wrapper {
+        height:55vh;
+    }
+  }
+
+  @media  (min-height: 386px) and (max-height: 556px) {
+    .wrapper {
+        height:66vh;
+    }
+  }
+
+  @media  (min-height: 557px) and (max-height: 639px) {
+    .wrapper {
+        height:77vh;
     }
   }
 
   @media (min-height: 640px) and (max-height: 666px) {
     .wrapper {
-        height:81vh;
+        height:79vh;
     }
   }
 
   @media (min-height: 667px) and (max-height: 730px) {
     .wrapper {
-        height:82vh;
+        height:80vh;
     }
   }
 
   @media (min-height: 731px) and (max-height: 735px) {
     .wrapper {
-        height:83vh;
+        height:81vh;
     }
   }
 
   @media (min-height: 736px) and (max-height: 811px) {
     .wrapper {
-        height:83vh;
+        height:81vh;
     }
   }
 
   @media (min-height: 812px) and (max-height: 822px) {
     .wrapper {
-        height:85vh;
+        height:83vh;
     }
   }
 
   @media (min-height: 823px) and (max-height: 980px) {
     .wrapper {
-        height:85vh;
+        height:83vh;
+    }
+  }
+
+  @media (min-height: 823px) and (max-height: 980px) {
+    .wrapper {
+        height:83vh;
     }
   }
 

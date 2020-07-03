@@ -22,15 +22,15 @@ class ProfileBox extends React.Component {
     render () {
         return (
             <article className="dt mw6 w-90 center bg-white br3 mb3 ba b--black-10 pa2">
-                <div className="dtc w2 w3-ns v-mid">
-                    <img src={this.state.imagePath} alt="" className="pa2 mr2 ba b--black-10 db br-100 w2 w3-ns h2 h3-ns" style={{objectFit: 'cover'}}/>
+                <div className="dtc w3 v-mid">
+                    <img src={this.state.imagePath} alt="" className="mr2 ba b--black-10 db br-100 w3 h3" style={{objectFit: 'cover'}}/>
                 </div>
                 <div className="dtc v-mid pl3">
-                    <h1 className="f5 f3-l fw2 lh-title black mv0">Hi {this.state.currentUser.displayName}!</h1>
+                    <h1 className="f3 f3-l fw3 lh-title black mv0">Hi {this.state.currentUser.displayName}!</h1>
                 </div>
                 <div className="dtc fr">
-                        <Link to="/picture" ><button className="f7 f6-l tr fw2 button-reset bg-white ba dib b--transparent dim pointer pv1 black-60 outline-transparent" type="submit">Edit</button></Link>
-                        <div className="mt2 mr1 mt4-l mt4-ns mb0-l tr">
+                        <Link to="/picture" ><button className="f6 f6-l tr fw3 button-reset bg-white ba dib b--transparent dim pointer pv1 black-60 outline-transparent" type="submit">Edit</button></Link>
+                        <div className="mt3 mr2 mt4-ns mb0-l tr">
                             <Link to="/createchat"><img type="submit" src={newChatIcon} className="dib pointer dim" alt="message bubble" style={{width: '20px', height: '20px'}} /></Link>
                         </div>
                 </div>
