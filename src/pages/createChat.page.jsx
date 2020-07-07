@@ -257,7 +257,7 @@ class CreateChat extends React.Component {
                                 <div className="dtc v-mid">
                                     <form className="w-100 tr">
                                     <button
-                                        className="f3 button-reset pb1 pl2 pr2 bg-white ba b--black-10 dim pointer black-60 br-100 outline-transparent"
+                                        className="f4 button-reset pb1 pt0-ns pt1 pl2 pr2 bg-white ba b--black-10 dim pointer black-60 br-100 outline-transparent"
                                         value={contact.id}
                                         onClick={this.addOrRemoveContactToGroup}
                                     >

@@ -3,6 +3,8 @@ import { firestore, auth, storageRef } from '../../firebase.utils';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import '../chatboard/chatboard.style.css';
+import defaultPic from '../../assets/icons/defaultprofilepic.png';
+
 
 
 export class ChatList extends React.Component {
@@ -21,14 +23,20 @@ export class ChatList extends React.Component {
 		return currentImageUrl
 	}
 
-	loadChats = (list, id, images) => {
+	loadChats = (list, id, images, groupName) => {
 		if (images.length === 1) {
 			let chat = {
 				id,
 				name: list.toString(),
 				image: images
 			}
-
+			if (groupName) {
+				chat = {
+					id,
+					name: groupName,
+					image: images
+				}
+			}
 			return chat
 		}
 
@@ -46,22 +54,31 @@ export class ChatList extends React.Component {
 		let chats = []
 		const chatsRef = firestore.collection('chats').where("participants", "array-contains", participantDocRef);
 		chatsRef.onSnapshot(snapshot => {
-			snapshot.docChanges().forEach(change => {
+			snapshot.docChanges().forEach(async change => {
 				if (change.type === 'added') {
 					const participantsRef = change.doc.data().participants
+					const groupChatName = change.doc.data().name
+
 					let displayNameList = []
 					let images = []
+					if (change.doc.data().imagePath !== undefined) {
+						const groupChatImagePath = await this.loadImageUrl(change.doc.data().imagePath.toString())
+						images.push(groupChatImagePath)
+					}
 
 					participantsRef.forEach(ref => {
 						ref.get().then(async res => {
-							if (!res.data().imagePath.includes(`${auth.currentUser.uid}`)) {
-								const path = await this.loadImageUrl(res.data().imagePath.toString())
-								images.push(path)
+							if (participantsRef.length === 2){
+								if (!res.data().imagePath.includes(`${auth.currentUser.uid}`)) {
+									const path = await this.loadImageUrl(res.data().imagePath.toString())
+									images.push(path)
+								}
 							}
+
 							displayNameList.push(` ${res.data().displayName}`)
 						}).then(()=> {
-							if (displayNameList.length === participantsRef.length) {
-								const newchat = this.loadChats(displayNameList, change.doc.id, images)
+							if (displayNameList.length === participantsRef.length ) {
+								const newchat = this.loadChats(displayNameList, change.doc.id, images, groupChatName)
 								chats.push(newchat)
 								this.setState({chats})
 							}
@@ -86,7 +103,7 @@ export class ChatList extends React.Component {
 					<li key={chat.id} className="flex lh-copy pa2 ph0-l bb b--black-10">
 						<Link to={{ pathname:`./chat/${chat.id}`}} className="no-underline pointer">
 						<div className="dt">
-							<img className="dtc w3 h3 br-100" style={{objectFit: 'cover'}} src={chat.image} alt="" />
+							<img className="dtc w3 h3 br-100" style={{objectFit: 'cover'}} src={chat.image || defaultPic} alt="" />
 							<span className="dtc v-mid fw3 pl3 f5 db black-70">{chat.name}</span>
 						</div>
 						</Link>

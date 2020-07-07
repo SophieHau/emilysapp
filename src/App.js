@@ -9,6 +9,7 @@ import ChatPage from './pages/chat.page';
 import CreateChat from './pages/createChat.page';
 import ContactSearch from './pages/contactsearch.page';
 import EditPicture from './pages/editpicture.page';
+import EditGroupPicture from './pages/editGroupPicture.page';
 
 class App extends React.Component {
   constructor() {
@@ -72,6 +73,10 @@ class App extends React.Component {
             <Route
               exact path='/picture'
               render={(props) => <EditPicture {...props} currentUser={this.state.currentUser} />}
+            />
+            <Route
+              exact path='/group-picture/:id'
+              render={(props) => <EditGroupPicture {...props} currentUser={this.state.currentUser} />}
             />
             <Route 
               exact path='/signin' 
