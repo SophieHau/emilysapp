@@ -91,6 +91,7 @@ export class ChatList extends React.Component {
 
 	render () {
 		const { chats, currentUserName } = this.state;
+
 		return (
 			<main className="wrapper">
 			<ul className="center mw6 w-90 list pl0 mt3 measure">

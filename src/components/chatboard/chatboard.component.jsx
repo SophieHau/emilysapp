@@ -1,6 +1,9 @@
 import React from 'react';
-import { firestore, auth, messaging } from '../../firebase.utils'; 
+import imageCompression from 'browser-image-compression';
+import { firestore, auth, messaging, getProfilePicUrl } from '../../firebase.utils'; 
 import sendIcon from '../../assets/icons/sendicon.jpg';
+import cameraIcon from '../../assets/icons/cameraicon.png';
+import cancelIcon from '../../assets/icons/cancelicon.png';
 import './chatboard.style.css';
 
 
@@ -14,6 +17,7 @@ export class ChatBoard extends React.Component {
                 })
             }
         })
+
         super(props);
 
         this.state = {
@@ -21,7 +25,6 @@ export class ChatBoard extends React.Component {
             messages: [],
             messageInput: '',
             newMessage: {},
-            token: ''
         }
     }
 
@@ -52,6 +55,7 @@ export class ChatBoard extends React.Component {
         })
 
         this.scrollToBottom();
+        this.saveToken();
     }
 
     componentDidUpdate = () => {
@@ -66,39 +70,79 @@ export class ChatBoard extends React.Component {
         });
     }
 
-    getToken = () => {
-        messaging.getToken().then((currentToken) => this.setState({token: currentToken}))
+    saveToken = async () => {
+        try {
+            const uid = auth.currentUser.uid
+            await messaging.requestPermission()
+            const token = await messaging.getToken()
+            const tokenRef = firestore.collection('tokens').where("token", "==", `${token}`);
+            const tokenSnap = await tokenRef.get();
+            if (tokenSnap.empty) {
+                firestore.collection('tokens').add({
+                    token,
+                    uid: uid
+                })
+            }
+        }   
+        catch(err) {
+            if (err.code === "messaging/token-unsubscribe-failed") 
+            this.saveToken();
+        }
     }
 
-    sendNotification = () => fetch('https://fcm.googleapis.com/fcm/send', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'key=' + process.env.REACT_APP_FIREBASE_MESSAGING_KEY,
-        },
-        body: JSON.stringify({
-            to: this.state.token,
-            notification: {
-                title: "test",
-                body: "test body"
+    sendNotification = async () => {
+        const currentUserRef = firestore.doc(`users/${auth.currentUser.uid}`);
+        const currentUserSnap = await currentUserRef.get();
+        const currentUserImageUrl = await getProfilePicUrl(currentUserSnap.data())
+        const chatRef = firestore.doc(`chats/${this.state.chatId}`)
+        const chatSnap = await chatRef.get();
+        const chatParticipants = chatSnap.data().participants;
+        const otherParticipants = []
+        chatParticipants.forEach(part => {
+            if (part.id !== auth.currentUser.uid){
+                otherParticipants.push(part.id)
             }
         })
-    })
+        const tokensRef = firestore.collection('tokens').where("uid", "in", otherParticipants);
+        const tokensSnap = await tokensRef.get();
+        const tokensList = tokensSnap.docs.map(doc=> doc.data().token)
+        const notification = {
+            title: `You have a new message from ${currentUserSnap.data().displayName}`,
+            icon: currentUserImageUrl,
+            click_action: `/chat/${chatRef.id}?id=${otherParticipants.toString()}`,
+        }
 
-          
+        tokensList.forEach(token => {
+            fetch('https://fcm.googleapis.com/fcm/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `key=${process.env.REACT_APP_FIREBASE_MESSAGING_KEY}` 
+                },
+                body: JSON.stringify({
+                    'to': token,
+                    'notification': notification,
+                })
+            })
+        })
+
+    }
+
     createMessageDocument = (event) => {
         event.preventDefault();
 
         const authorRef = firestore.doc(`users/${auth.currentUser.uid}`)
         const newMessage = {
-            author: authorRef, 
+            author: authorRef,
             content: this.state.messageInput,
             createdAt: new Date()
         }
+
         if (newMessage['content'] !== "") {
             firestore.collection('chats').doc(this.state.chatId).collection('messages')
             .add(newMessage)
             this.setState({messageInput: ''})
+            this.sendNotification();
         }
     }
         
@@ -111,8 +155,52 @@ export class ChatBoard extends React.Component {
         this.messagesEnd.scrollIntoView();
     }
 
-    onFocus=(event) => {
+    onFocus = (event) => {
         event.target.setAttribute('autocomplete', 'off');
+    }
+
+    handleElSelect = () => {
+        const fileInput = document.getElementById("pic");
+        fileInput.click();
+    }
+
+    handleImageSelect = async (event) => {
+        const imageFile = event.target.files[0];
+       
+        const options = {
+          maxSizeMB: 0.6,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true
+        }
+        try {
+          const compressedFile = await imageCompression(imageFile, options);
+          this.setState({ imagePath: URL.createObjectURL(compressedFile), compressedImage: compressedFile })
+          console.log(this.state.compressedImage)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    cancelImage = () => {
+        this.setState({compressedImage: false})
+    }
+
+    sendPic = (event) => {
+        event.preventDefault();
+        // if (this.state.compressedImage !== null) {
+        //     const authorRef = firestore.doc(`users/${auth.currentUser.uid}`)
+        //     const newMessage = {
+        //         author: authorRef,
+        //         content: this.state.compressedImage,
+        //         createdAt: new Date()
+        //     }
+        //     if (newMessage['content'] !== "") {
+        //         firestore.collection('chats').doc(this.state.chatId).collection('messages')
+        //         .add(newMessage)
+        //         this.setState({messageInput: ''})
+        //         this.sendNotification();
+        //     }
+        // }
     }
 
     render () {
@@ -147,11 +235,32 @@ export class ChatBoard extends React.Component {
                     </div>
             </main>
             <form className="circle-form mw6 fn bg-white center dib w-90 mb3" onSubmit={this.createMessageDocument}>
-                    <div className="pb1 pt1 ba b--black-20 br4">
-                        <input 
+                    <div className="pb1 pt2 ba b--black-20 br4">
+                        { this.state.compressedImage ? 
+                        <>
+                        
+                        <button
+                            className="mr1 fr bg-transparent ba b--white-20 outline-transparent v-btm" 
+                            type="submit"
+                            onClick={this.sendPic}
+                        >
+                            <img src={sendIcon} alt="paper plane" style={{width: '30px'}}/>
+                        </button>
+                        <img src={this.state.imagePath} alt="" style={{width: '80px'}}/>
+                        <button
+                            className="mr1 fl bg-transparent ba b--white-20 outline-transparent v-mid" 
+                            type="submit"
+                            onClick={this.cancelImage}
+                        >
+                            <img src={cancelIcon} alt="paper plane" style={{width: '20px'}}/>
+                        </button>
+                        </>
+                        : 
+                        <>
+                        <input
                             id="messageInput" 
                             name="messageInput"
-                            className="f6 w-75 ml1 mr1 pa2 input-reset ba b--white-20 outline-transparent" 
+                            className="f6 w-50 ml1 pa2 input-reset ba b--white-20 outline-transparent" 
                             type="text"
                             value={this.state.messageInput}
                             placeholder="Type a message..."
@@ -162,10 +271,22 @@ export class ChatBoard extends React.Component {
                         <button
                             className="mr1 fr bg-transparent ba b--white-20 outline-transparent v-mid" 
                             type="submit"
+                            onClick={this.handleElSelect}
+                        >
+                            <img src={cameraIcon} alt="paper plane" style={{width: '30px'}}/>
+                        </button>
+                        <input type="file" hidden id="pic" accept="image/*" onChange={this.handleImageSelect} />
+                        <button
+                            className="mr1 fr bg-transparent ba b--white-20 outline-transparent v-mid" 
+                            type="submit"
                             onClick={this.createMessageDocument}
                         >
                             <img src={sendIcon} alt="paper plane" style={{width: '30px'}}/>
                         </button>
+                        </>
+                        }
+                        
+                        
                     </div>
                 </form>
                 

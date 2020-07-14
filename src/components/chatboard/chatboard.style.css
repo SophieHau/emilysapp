@@ -1,6 +1,6 @@
 .wrapper{
     height:60vh;
-    overflow-y: auto;
+    overflow-y: scroll;
     position:relative;
   }
 

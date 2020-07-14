@@ -4,14 +4,14 @@ import { ChatNav } from '../components/chatnav/chatnav.component';
 
 
 class ChatPage extends React.Component {
-    
+
     render () {
         let { id } = this.props.match.params
 
         return(
             <>
-            <ChatNav chatId={id}/>
-            <ChatBoard chatId={id}/>
+            <ChatNav chatId={id} />
+            <ChatBoard chatId={id} />
             </>
         )
     }

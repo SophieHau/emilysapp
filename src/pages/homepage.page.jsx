@@ -6,6 +6,7 @@ import Navigation from '../components/navbar/navbar.component';
 
 
 const HomePage = ({ currentUser }) => {
+
     if (currentUser) {
         return (
             <>

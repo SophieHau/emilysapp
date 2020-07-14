@@ -38,9 +38,36 @@ export class ChatNav extends React.Component {
 	}
     
     componentDidMount = async () => {
-        const currentUserRef = firestore.doc(`users/${auth.currentUser.uid}`)
-        const currentUserSnap = await currentUserRef.get()
-        const currentUserName = currentUserSnap.data().displayName
+        if (window.location.search.includes(',')) {
+            const index = window.location.search.indexOf(',') 
+            try {
+                const currentUserRef = firestore.doc(`users/${window.location.search.slice(4, index)}`)
+                const currentUserSnap = await currentUserRef.get()
+                const currentUserName = currentUserSnap.data().displayName
+                this.setState({currentUserName, group:true})
+            }
+
+            catch {
+                const currentUserRef = firestore.doc(`users/${window.location.search.slice(index)}`)
+                const currentUserSnap = await currentUserRef.get()
+                const currentUserName = currentUserSnap.data().displayName
+                this.setState({currentUserName})
+            }
+        }
+        try {
+            const currentUserRef = firestore.doc(`users/${window.location.search.slice(4)}`)
+            const currentUserSnap = await currentUserRef.get()
+            const currentUserName = currentUserSnap.data().displayName
+            this.setState({currentUserName})
+            
+        }
+        catch {
+            const currentUserRef = firestore.doc(`users/${auth.currentUser.uid}`)
+            const currentUserSnap = await currentUserRef.get()
+            const currentUserName = currentUserSnap.data().displayName
+            this.setState({currentUserName})
+        }
+        
 
         const currentChatRef = firestore.doc(`chats/${this.state.chatId}`)
         const currentChatSnap = await currentChatRef.get()
@@ -50,7 +77,6 @@ export class ChatNav extends React.Component {
             this.setState({chatImage: currentChatImage})
         }
 
-        this.setState({currentUserName})
         let chatName = []
         let images = []
         firestore.collection('chats').doc(`${this.state.chatId}`)
@@ -77,7 +103,7 @@ export class ChatNav extends React.Component {
     }
 
     render() {
-        let { chatName, currentUserName, chatImage, chatId } = this.state
+        let { chatName, currentUserName, chatImage, chatId, } = this.state
         chatName = chatName.toString()
         chatName = chatName.replace(currentUserName, "@You")
 
@@ -86,12 +112,20 @@ export class ChatNav extends React.Component {
             return (
                 <nav className="dt w-90 center pt2 mb3 ml2 bb b--black-05">
                 <div className="dtc mr3 fl v-mid f6">
-                    <Link to="/"><img src={backIcon} className="mt1 br-100 v-mid mr2" style={{width: '25px', height: '25px'}} alt="arrow"/></Link> 
-                    <img src={chatImage} className="mt1 h2 w2 br-100 v-mid" alt="profile" style={{objectFit: 'cover'}}/>
+                    <Link to={"/"}><img src={backIcon} className="mt1 br-100 v-mid mr2" style={{width: '25px', height: '25px'}} alt="arrow"/></Link> 
+                    <img src={chatImage || defaultPic} className="mt1 h2 w2 br-100 v-mid" alt="profile" style={{objectFit: 'cover'}}/>
                 </div>                                                                                                                                                                                                                                                                                  
                 <div className="dtc v-mid fl">
                     <p className="dark-gray f6 pa0 mr3">{chatName}...</p>
                 </div>
+                {this.state.group 
+                    ?                 
+                        <div className="dtc fr v-mid f6 mt2">
+                            <Link to={`/group-picture/${chatId}`}><img src={editIcon} className="v-mid pt1" style={{width: '25px', height: '25px'}} alt="arrow"/></Link> 
+                        </div>
+                    : 
+                        null 
+                }
             </nav>
             )
         }
@@ -99,7 +133,7 @@ export class ChatNav extends React.Component {
         return (
             <nav className="dt w-90 center pt2 mb3 ml2 bb b--black-05">
                 <div className="dtc mr3 fl v-mid f6">
-                    <Link to="/"><img src={backIcon} className="mt1 br-100 v-mid mr2" style={{width: '25px', height: '25px'}} alt="arrow"/></Link> 
+                    <Link to={{pathname: "/"}}><img src={backIcon} className="mt1 br-100 v-mid mr2" style={{width: '25px', height: '25px'}} alt="arrow"/></Link> 
                     <img src={chatImage || defaultPic} className="mt1 h2 w2 br-100 v-mid" alt="profile" style={{objectFit: 'cover'}}/>
                 </div>
                 <div className="dtc v-mid fl">

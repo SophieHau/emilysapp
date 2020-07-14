@@ -46,9 +46,18 @@ class App extends React.Component {
   }
 
   render() {
+
     return (
       <div className="App">
         <Router>
+        {window.location.href !== window.location.origin+'/' ?
+            < Redirect to={{
+              pathname: window.location.pathname,
+              // state: {
+              //   currentUserid: window.location.search.slice(4)
+              // }
+            }} />: null
+          }
           <Switch>
             <Route 
               exact path='/' 
@@ -56,7 +65,7 @@ class App extends React.Component {
             />
             <Route
               exact path='/chat/:id'
-              component={ChatPage}
+              render={(props) => <ChatPage {...props} currentUser={this.state.currentUser} />}
             />
             <Route
               exact path='/newchat'
