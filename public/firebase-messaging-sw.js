@@ -5,7 +5,7 @@ importScripts('https://www.gstatic.com/firebasejs/7.15.0/firebase-messaging.js')
 
 
 firebase.initializeApp({
-    apiKey: API_KEY,
+    apiKey: 'appkey',
     authDomain: "emilys-app-f1604.firebaseapp.com",
     databaseURL: "https://emilys-app-f1604.firebaseio.com",
     projectId: "emilys-app-f1604",
@@ -17,7 +17,7 @@ firebase.initializeApp({
 
 if (firebase.messaging.isSupported()) {
   const messaging = firebase.messaging()
-  messaging.usePublicVapidKey("VAPIDKEY")
+  messaging.usePublicVapidKey("BHOR4XJE1UBzJk7Su1nettzX9QVFh0IxeeujDRQSIa9Cl7Aipd2m3VgOSGTm-YzcF51AcJ1xOjg6z6RjQKWFGdc")
 }
 
 
