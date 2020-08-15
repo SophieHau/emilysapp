@@ -1,8 +1,0 @@
-{
-    "appId": "io.ionic.emilysapp",
-    "appName": "Emily's App",
-    "bundledWebRuntime": false,
-    "npmClient": "npm",
-    "webDir": "build",
-    "cordova": {}
-  }

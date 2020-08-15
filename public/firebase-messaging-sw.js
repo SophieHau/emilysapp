@@ -5,7 +5,7 @@ importScripts('https://www.gstatic.com/firebasejs/7.15.0/firebase-messaging.js')
 
 
 firebase.initializeApp({
-    apiKey: 'appkey',
+    apiKey: 'AIzaSyCVhZqzlvuZw4IH3y9JhkIkNDGzJiMUvC0',
     authDomain: "emilys-app-f1604.firebaseapp.com",
     databaseURL: "https://emilys-app-f1604.firebaseio.com",
     projectId: "emilys-app-f1604",

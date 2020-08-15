@@ -9,7 +9,15 @@ import defaultPic from '../../assets/icons/defaultprofilepic.png';
 
 export class ChatList extends React.Component {
 	constructor(props) {
-
+		auth.onAuthStateChanged(user => {
+            if(user) {
+                const userRef = firestore.doc(`users/${user.uid}`);
+                user = userRef.get().then(user => {
+                    this.state['currentUser'] = user.data()
+                })
+            }
+		})
+		
 		super(props);
 		this.state = {
 			chats: []
